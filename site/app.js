@@ -94,19 +94,54 @@
     });
   }
 
+  /* ---------- LIVE vs OFFLINE mode ---------- */
+  // On load we ask the backend which models are configured. If 1+ keys are
+  // present we run the REAL Trinity swarm over SSE; otherwise we animate the
+  // deterministic offline engine. The site is never broken either way.
+  let LIVE = { live: false, models: [], websearch: false, trinity: false };
+  async function probeStatus() {
+    try {
+      const r = await fetch("/api/status", { cache: "no-store" });
+      if (r.ok) LIVE = await r.json();
+    } catch (e) { /* static hosting / no backend → stay offline */ }
+    const tag = $("#mode-tag");
+    if (tag) {
+      if (LIVE.live) {
+        const names = LIVE.models.map(m => m.label).join(" + ");
+        tag.innerHTML = `<span class="ld"></span> LIVE · ${names}` +
+          (LIVE.trinity ? " · cross-critique on" : "") +
+          (LIVE.websearch ? " · real web search" : "");
+        tag.className = "live mode-tag on";
+      } else {
+        tag.innerHTML = '<span class="ld"></span> running offline · no API key · real IRR';
+        tag.className = "live mode-tag";
+      }
+    }
+  }
+
   /* ---------- run the swarm ---------- */
   let running = false;
   async function run() {
     if (running) return; running = true;
     const btn = $("#run"); btn.disabled = true; btn.textContent = "⚙ Running…";
     const text = $("#prompt").value.trim() || $("#prompt").value;
-    const res = G.reason(text);
-
-    renderSwarmCards(res.agents);
     $("#output").style.display = "none";
     $("#fmt").innerHTML = ""; $("#verdict").innerHTML = "";
+    try {
+      if (LIVE.live) { await runLive(text); }
+      else { await runOffline(text); }
+    } catch (e) {
+      // any live failure → graceful offline fallback
+      await runOffline(text);
+    }
+    memCount++;
+    btn.disabled = false; btn.textContent = "⚡ Run engine"; running = false;
+  }
 
-    // animate agents in sequence with overlapping "thinking"
+  // OFFLINE: deterministic engine with the original staged animation.
+  async function runOffline(text) {
+    const res = G.reason(text);
+    renderSwarmCards(res.agents);
     for (let i = 0; i < res.agents.length; i++) {
       const a = res.agents[i];
       const card = $("#ag-" + a.id);
@@ -115,19 +150,89 @@
       const log = $(".log", card); const bar = $(".bar", card);
       for (let j = 0; j < a.thinking.length; j++) {
         const ln = el("div", "ln", "› " + a.thinking[j]);
-        ln.style.animationDelay = "0s"; log.appendChild(ln);
+        log.appendChild(ln);
         bar.style.width = Math.round(((j + 1) / a.thinking.length) * 100) + "%";
         await sleep(230);
       }
-      card.className = "agent done";
-      $(".st", card).innerHTML = "✓ done";
+      card.className = "agent done"; $(".st", card).innerHTML = "✓ done";
       await sleep(120);
     }
-
     renderOutput(res);
-    memCount++;
-    btn.disabled = false; btn.textContent = "⚡ Run engine"; running = false;
   }
+
+  // LIVE: consume the SSE stream from /api/run and render real reasoning.
+  function runLive(text) {
+    return new Promise((resolve, reject) => {
+      // scaffold the 5 agents up front
+      renderSwarmCards(G.reason(text).agents);
+      const es = new EventSource("/api/run?prompt=" + encodeURIComponent(text));
+      let done = false;
+      const setStatus = (id, html) => { const c = $("#ag-" + id); if (c) $(".st", c).innerHTML = html; };
+      const addLine = (id, txt, cls) => {
+        const c = $("#ag-" + id); if (!c) return;
+        const ln = el("div", "ln " + (cls || ""), txt); $(".log", c).appendChild(ln);
+        const log = $(".log", c); log.scrollTop = log.scrollHeight;
+      };
+      const activate = (id) => { const c = $("#ag-" + id); if (c) { c.className = "agent active"; setStatus(id, '<span class=\"spinner\"></span> thinking…'); } };
+      const finish = (id) => { const c = $("#ag-" + id); if (c) { c.className = "agent done"; setStatus(id, "✓ done"); $(".bar", c).style.width = "100%"; } };
+
+      es.addEventListener("agent_start", (e) => { const d = JSON.parse(e.data); activate(d.id); });
+      es.addEventListener("agent_done", (e) => { const d = JSON.parse(e.data); finish(d.id); });
+      es.addEventListener("round", (e) => {
+        const d = JSON.parse(e.data);
+        const labels = (d.models || []).join(", ");
+        const txt = d.round === "draft" ? `› drafting in parallel: ${labels}`
+          : d.round === "critique" ? `› cross-critique: models reviewing each other`
+          : `› fusing answers (judge: ${d.judge})`;
+        addLine(d.agentId, txt, "round");
+      });
+      es.addEventListener("draft", (e) => { const d = JSON.parse(e.data); addLine(d.agentId, `  · ${d.model}: ${(d.text||"").slice(0,90)}…`, "dim"); });
+      es.addEventListener("critique", (e) => { const d = JSON.parse(e.data); addLine(d.agentId, `  ↻ ${d.model} improved`, "dim"); });
+      es.addEventListener("fused", (e) => { const d = JSON.parse(e.data); addLine(d.agentId, `  ✓ fused by ${d.judge}`, "ok"); });
+      es.addEventListener("source_web", (e) => {
+        const d = JSON.parse(e.data);
+        addLine("source", "› " + (d.text || "").slice(0, 120) + "…");
+        (d.citations || []).slice(0, 4).forEach(u => addLine("source", "  ↗ " + u, "cite"));
+      });
+      es.addEventListener("market_numbers", (e) => {
+        const d = JSON.parse(e.data);
+        addLine("market", `› real IRR: project ${d.projectIRRpct} · equity ${d.equityIRRpct} (bisection)`, "ok");
+      });
+      es.addEventListener("model_error", (e) => { const d = JSON.parse(e.data); addLine(d.agentId || "source", `  ⚠ ${d.model}: ${d.error}`, "warn"); });
+      es.addEventListener("result", (e) => { liveResult = JSON.parse(e.data); });
+      es.addEventListener("offline", () => { es.close(); runOffline(text).then(resolve); });
+      es.addEventListener("error", (e) => { try { addLine("critic", "⚠ stream error", "warn"); } catch (_) {} });
+      es.addEventListener("end", () => {
+        if (done) return; done = true; es.close();
+        if (liveResult) renderLive(liveResult);
+        resolve();
+      });
+      es.onerror = () => { if (!done) { done = true; es.close(); reject(new Error("sse")); } };
+    });
+  }
+  let liveResult = null;
+
+  // Render the live result: deterministic 7-block Format + live narrative.
+  function renderLive(r) {
+    if (r.format && r.verdict) renderOutput({ format: r.format, verdict: r.verdict });
+    // prepend the live model narratives above the structured Format
+    const fmt = $("#fmt");
+    const narr = [];
+    if (r.permitting && r.permitting.answer) narr.push(["Permitting (Trinity)", r.permitting]);
+    if (r.grid && r.grid.answer) narr.push(["Grid (Trinity)", r.grid]);
+    if (r.market && r.market.answer) narr.push(["Market & IRR (Trinity)", r.market]);
+    if (r.critic && r.critic.answer) narr.push(["Critic verdict (Trinity)", r.critic]);
+    if (narr.length && fmt) {
+      const wrap = el("div", "block full live-narr");
+      let h = `<div class="bh"><span class="bt">🧠 Live model reasoning</span><span class="badge ok">${(r.market&&r.market.models?r.market.models.length:1)} models · cross-critiqued</span></div>`;
+      narr.forEach(([t, blk]) => {
+        h += `<div class="narr-item"><div class="narr-t">${t}${blk.single?" · single model":""}</div><div class="narr-b">${escapeHtml(blk.answer).slice(0,1400)}</div></div>`;
+      });
+      wrap.innerHTML = h;
+      fmt.insertBefore(wrap, fmt.firstChild);
+    }
+  }
+  function escapeHtml(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
   /* ---------- render the 7-block Format ---------- */
   function badge(text) {
@@ -216,7 +321,7 @@
   }
 
   /* ---------- wire up ---------- */
-  function init() {
+  async function init() {
     loadStats(); renderMemory(); renderModules();
     // initial empty swarm scaffold (idle preview)
     renderSwarmCards(G.reason($("#prompt").value).agents);
@@ -230,6 +335,8 @@
       const id = a.getAttribute("href").slice(1); const t = document.getElementById(id);
       if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth" }); }
     }));
+    // detect live backend (model keys) before the first run
+    await probeStatus();
     // auto-run once on load so visitors instantly see the swarm work
     setTimeout(run, 700);
   }

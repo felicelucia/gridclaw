@@ -280,3 +280,17 @@ footer{border-top:1px solid var(--line);padding:48px 0 60px;margin-top:10px;back
 /* reveal on scroll */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
 .reveal.in{opacity:1;transform:none}
+
+/* ---- LIVE mode additions ---- */
+.mode-tag.on .ld{background:var(--acc);box-shadow:0 0 0 4px rgba(15,122,82,.18);animation:pulse 1.4s infinite}
+.mode-tag.on{color:var(--acc);font-weight:600}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.log .ln.round{color:var(--acc);font-weight:600}
+.log .ln.dim{color:var(--txt-3,#7c8a86);opacity:.85}
+.log .ln.ok{color:var(--acc)}
+.log .ln.warn{color:#b4690e}
+.log .ln.cite{color:var(--acc-2,#1561b8);text-decoration:none;word-break:break-all}
+.live-narr .narr-item{padding:12px 0;border-top:1px solid var(--line,#e6ece9)}
+.live-narr .narr-item:first-of-type{border-top:0}
+.live-narr .narr-t{font-weight:700;color:var(--acc);margin-bottom:4px;font-size:13px}
+.live-narr .narr-b{white-space:pre-wrap;line-height:1.55;color:var(--txt-2,#3a4a45);font-size:14px}

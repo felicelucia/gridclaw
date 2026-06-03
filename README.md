@@ -108,7 +108,12 @@ gridclaw/
 
 ## <a name="model-agnostic"></a>Model-agnostic
 
-GridClaw is glue + domain knowledge, not a model. The reasoning entrypoint is a single function — `GridClaw.reason(text)` in [`site/engine.js`](site/engine.js) — that today calls a deterministic mock. Swap it for **Claude**, **GPT**, **DeepSeek** or any local model and the rest of the engine is unchanged.
+GridClaw is glue + domain knowledge, not a model. It runs in two modes:
+
+- **Offline** (zero keys): a deterministic engine in [`site/engine.js`](site/engine.js) with **real IRR/NPV math** and the Italy ground-truth module. The site is always usable.
+- **Live** (add keys): a Node backend runs the **Trinity** swarm — Claude + GPT + DeepSeek answer in parallel, then **cross-critique each other**, then a judge **fuses** one reconciled answer. The Source Finder does **real web search** with citations; the numbers stay deterministic (the LLMs interpret them, they never invent them).
+
+No model is privileged — add one key or all three. See [Go live](#go-live) below.
 
 ---
 
@@ -167,6 +172,49 @@ node -e "global.window=global; require('./site/engine.js');
   const r = GridClaw.analyze('BESS 100MW / 400MWh Vallo della Lucania');
   console.log(r.format.block6_finance.projectIRRpct, r.format.block6_finance.equityIRRpct);"
 ```
+
+---
+
+## <a name="go-live"></a>Go live (the Trinity engine)
+
+Turn the demo into a real, reasoning engine in ~30 seconds.
+
+```bash
+git clone https://github.com/felicelucia/gridclaw
+cd gridclaw
+npm install
+cp .env.example .env        # paste your keys into .env
+npm run dev                 # → http://localhost:8099
+```
+
+Then open `http://localhost:8099`. The status badge flips from **“running offline”** to **“LIVE · Claude + GPT + DeepSeek · cross-critique on · real web search”** automatically.
+
+### Keys (all optional, all in `.env`)
+
+| Variable | Unlocks |
+|---|---|
+| `ANTHROPIC_API_KEY` | Claude as a reasoning model |
+| `OPENAI_API_KEY` | GPT as a reasoning model |
+| `DEEPSEEK_API_KEY` | DeepSeek as a reasoning model |
+| `PERPLEXITY_API_KEY` | **Real web search** with citations in the Source Finder |
+
+- **1 key** → the swarm reasons live with that model.
+- **2+ keys** → **Trinity cross-critique** activates: models review each other and a judge fuses the result.
+- **0 keys** → the site still works, fully offline, with real IRR.
+
+Keys are read from the environment only and never reach the browser. `.env` is git-ignored.
+
+### How the live engine is wired
+
+```
+server/
+├─ providers.js   # uniform adapter over Claude · GPT · DeepSeek + Perplexity web search
+├─ trinity.js     # draft (parallel) → cross-critique → fuse  (the multi-model council)
+├─ agents.js      # Source Finder (web) → Permitting → Grid → Market&IRR (real math) → Critic
+└─ index.js       # Express: serves the site + /api/status + /api/run (SSE stream)
+```
+
+The front-end calls `GET /api/status` on load to detect live mode, then streams the real swarm reasoning from `GET /api/run` over Server-Sent Events. Any live failure degrades gracefully back to the offline engine.
 
 ---
 
