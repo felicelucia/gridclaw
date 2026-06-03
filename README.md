@@ -152,7 +152,7 @@ Start from [`modules/italy/module.json`](modules/italy/module.json) — it's the
 ## Run the demo
 
 ```bash
-git clone https://github.com/<you>/gridclaw
+git clone https://github.com/felicelucia/gridclaw
 cd gridclaw/site
 python3 -m http.server 8099
 # open http://localhost:8099

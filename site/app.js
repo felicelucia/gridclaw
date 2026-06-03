@@ -53,7 +53,7 @@
     mods.forEach(m => {
       const c = el("div", "modbox " + m.cls);
       c.innerHTML = `<div class="flag">${m.flag}</div><div class="cn">${m.name}</div><div class="cs">${m.st}</div>`;
-      if (m.cls === "empty") c.onclick = () => window.open("https://github.com", "_blank");
+      if (m.cls === "empty") c.onclick = () => window.open("https://github.com/felicelucia/gridclaw/tree/master/modules/_template", "_blank");
       box.appendChild(c);
     });
   }
