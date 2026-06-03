@@ -7,7 +7,7 @@
 <meta name="description" content="GridClaw is a generalist, model-agnostic AI engine for the energy sector. It finds the right sources, learns the rules, and acts: permitting, grid, market & IRR. Fork your country.">
 <meta property="og:title" content="GridClaw — open-source energy engine">
 <meta property="og:description" content="The bottleneck of the AI era is not the chip — it's permitting and grid connection. We're opening it up.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 L27 9 V23 L16 29 L5 23 V9 Z' fill='none' stroke='%2337e0a6' stroke-width='2'/%3E%3Cpath d='M17 8 L11 17 H16 L15 24 L21 14 H16 Z' fill='%2337e0a6'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 L27 9 V23 L16 29 L5 23 V9 Z' fill='none' stroke='%230f7a52' stroke-width='2'/%3E%3Cpath d='M17 8 L11 17 H16 L15 24 L21 14 H16 Z' fill='%230f7a52'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -37,7 +37,7 @@
 <section class="hero"><div class="wrap">
   <div class="tag"><span class="dot"></span> Model-agnostic · Claude / GPT / DeepSeek swappable · AGPL-3.0</div>
   <h1>GridClaw</h1>
-  <p class="sub">The open-source engine that <b class="acc">understands</b>, <b class="acc">learns</b> and <b class="acc">acts</b> on energy — in any country.</p>
+  <p class="sub">The open-source engine that <b>understands</b>, <b>learns</b> and <b>acts</b> on energy — in any country.</p>
   <div class="thesis">
     <b>The bottleneck of the AI era is not the chip — it's permitting and grid connection.</b>
     Data centers, electrification and storage are blocked at the interconnection queue and the authorization desk.
@@ -53,28 +53,13 @@
   </div>
 </div></section>
 
-<!-- CAPABILITIES -->
-<section><div class="wrap">
-  <div class="sec-head reveal">
-    <div class="eyebrow">The generalist loop</div>
-    <h2 class="h2">One engine. Three capabilities.<br>Every country.</h2>
-    <p class="lead">GridClaw is a generalist engine that, in every country, understands <i>where</i> to get the information, <i>learns</i> it, and then <i>acts</i> on it.</p>
-  </div>
-  <div class="triad">
-    <div class="cap reveal"><div class="num">01 · UNDERSTAND</div><h3>Find the right sources</h3><p>Locate the regulator, the grid operator, the tender platforms and the laws that govern a project — without a human telling it where to look.</p></div>
-    <div class="cap reveal"><div class="num">02 · LEARN</div><h3>Read &amp; structure</h3><p>Parse heterogeneous rulebooks into one common Format, kept alive via RAG so norms and rulings never go stale.</p></div>
-    <div class="cap reveal"><div class="num">03 · ACT</div><h3>Compute, simulate, contact</h3><p>Run the real IRR, simulate scenarios, compare schemes, and route the dossier to the right counterparty.</p></div>
-  </div>
-</div></section>
-
-<!-- LIVE ENGINE DEMO -->
-<section id="engine"><div class="wrap">
-  <div class="sec-head reveal">
-    <div class="eyebrow">Live engine · runs offline, no API key</div>
-    <h2 class="h2">Describe a project. Watch the swarm work.</h2>
-    <p class="lead">A multi-agent swarm finds the sources, learns the rules, computes the economics, and a critic verifies every block. The reasoning is mocked for the demo; the IRR is computed by real code.</p>
-  </div>
-  <div class="engine reveal">
+<!-- LIVE ENGINE DEMO — the star, right under the hero -->
+<section id="engine" class="hero-engine"><div class="wrap">
+  <div class="engine reveal in">
+    <div class="engine-head">
+      <span class="et">⚡ The engine in action — a multi-agent swarm, live</span>
+      <span class="live"><span class="ld"></span> running offline · no API key · real IRR</span>
+    </div>
     <div class="prompt-row">
       <label class="prompt-box">
         <span class="pfx">▸</span>
@@ -83,6 +68,7 @@
       <button class="btn btn-primary run-btn" id="run">⚡ Run engine</button>
     </div>
     <div class="examples">
+      <span class="exlab">try:</span>
       <span class="chip" data-ex="BESS 200MW / 800MWh brownfield ex-coal site in Brindisi, RTB — who do I sell to?">RTB brownfield · Brindisi</span>
       <span class="chip" data-ex="Solar PV 48MW in Foggia, Puglia — feasibility and revenue scheme">Solar PV · Foggia</span>
       <span class="chip" data-ex="BESS 30MW / 120MWh greenfield in Sardinia — merchant IRR">BESS island · Sardinia</span>
@@ -100,6 +86,20 @@
   </div>
 </div></section>
 
+<!-- CAPABILITIES -->
+<section class="alt"><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">The generalist loop</div>
+    <h2 class="h2">One engine. Three capabilities. Every country.</h2>
+    <p class="lead">GridClaw is a generalist engine that, in every country, understands <i>where</i> to get the information, <i>learns</i> it, and then <i>acts</i> on it.</p>
+  </div>
+  <div class="triad">
+    <div class="cap reveal"><div class="num">01 · UNDERSTAND</div><h3>Find the right sources</h3><p>Locate the regulator, the grid operator, the tender platforms and the laws that govern a project — without a human telling it where to look.</p></div>
+    <div class="cap reveal"><div class="num">02 · LEARN</div><h3>Read &amp; structure</h3><p>Parse heterogeneous rulebooks into one common Format, kept alive via RAG so norms and rulings never go stale.</p></div>
+    <div class="cap reveal"><div class="num">03 · ACT</div><h3>Compute, simulate, contact</h3><p>Run the real IRR, simulate scenarios, compare schemes, and route the dossier to the right counterparty.</p></div>
+  </div>
+</div></section>
+
 <!-- MEMORY -->
 <section id="memory"><div class="wrap">
   <div class="sec-head reveal">
@@ -112,7 +112,7 @@
 </div></section>
 
 <!-- FORK YOUR COUNTRY -->
-<section id="fork"><div class="wrap">
+<section id="fork" class="alt"><div class="wrap">
   <div class="sec-head reveal">
     <div class="eyebrow">Built to be forked</div>
     <h2 class="h2">A generalist kernel.<br>One module per country.</h2>
@@ -156,7 +156,7 @@
 </div></section>
 
 <!-- PRICING -->
-<section id="pricing"><div class="wrap">
+<section id="pricing" class="alt"><div class="wrap">
   <div class="sec-head reveal">
     <div class="eyebrow">Monetization</div>
     <h2 class="h2">Free engine. You pay at the handoff.</h2>

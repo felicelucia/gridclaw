@@ -61,10 +61,11 @@
   /* ---------- swarm scaffold ---------- */
   function renderSwarmCards(agents) {
     const sw = $("#swarm"); sw.innerHTML = "";
-    agents.forEach(a => {
+    agents.forEach((a, i) => {
       const c = el("div", "agent idle");
       c.id = "ag-" + a.id;
-      c.innerHTML = `<div class="ico">${a.icon}</div><div class="nm">${a.name}</div>
+      c.innerHTML = `<div class="ag-top"><div class="ico">${a.icon}</div><span class="stepno">${i + 1}/${agents.length}</span></div>
+        <div class="nm">${a.name}</div>
         <div class="st">queued</div><div class="log"></div><div class="bar"></div>`;
       sw.appendChild(c);
     });
@@ -206,6 +207,8 @@
       const id = a.getAttribute("href").slice(1); const t = document.getElementById(id);
       if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth" }); }
     }));
+    // auto-run once on load so visitors instantly see the swarm work
+    setTimeout(run, 700);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
