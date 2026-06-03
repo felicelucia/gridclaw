@@ -8,17 +8,40 @@
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
   let memCount = G.MEMORY.length;
 
-  /* ---------- star counter animation ---------- */
-  function animStars() {
-    const targets = [["navstars", 1000], ["herostars", 1000]];
-    targets.forEach(([id, target]) => {
-      const node = document.getElementById(id); if (!node) return;
-      let v = 820; const step = () => {
-        v += Math.ceil((target - v) / 12); if (v >= target) v = target;
-        node.textContent = v.toLocaleString();
-        if (v < target) requestAnimationFrame(step);
-      }; step();
-    });
+  /* ---------- live GitHub stats ---------- */
+  // Real, honest numbers pulled from the public GitHub API. No placeholders.
+  const REPO = "felicelucia/gridclaw";
+
+  function countUp(id, target) {
+    const node = document.getElementById(id); if (!node) return;
+    target = Number(target) || 0;
+    let v = 0; const step = () => {
+      v += Math.max(1, Math.ceil((target - v) / 12)); if (v >= target) v = target;
+      node.textContent = v.toLocaleString();
+      if (v < target) requestAnimationFrame(step);
+    };
+    if (target <= 0) { node.textContent = "0"; } else { step(); }
+  }
+
+  async function loadStats() {
+    try {
+      const r = await fetch("https://api.github.com/repos/" + REPO, { headers: { Accept: "application/vnd.github+json" } });
+      if (!r.ok) throw new Error("gh " + r.status);
+      const d = await r.json();
+      const stars = d.stargazers_count || 0;
+      const forks = d.forks_count || 0;
+      countUp("navstars", stars);
+      countUp("herostars", stars);
+      countUp("heroforks", forks);
+      // contributors: count via the contributors endpoint (fallback to 1)
+      try {
+        const cr = await fetch("https://api.github.com/repos/" + REPO + "/contributors?per_page=100&anon=1", { headers: { Accept: "application/vnd.github+json" } });
+        if (cr.ok) { const cl = await cr.json(); countUp("herocontrib", Array.isArray(cl) ? cl.length : 1); }
+      } catch (e) { /* keep default */ }
+    } catch (e) {
+      // Offline / rate-limited: leave honest zeros in place.
+      ["navstars", "herostars", "heroforks"].forEach(id => { const n = document.getElementById(id); if (n) n.textContent = "0"; });
+    }
   }
 
   /* ---------- reveal on scroll ---------- */
@@ -194,7 +217,7 @@
 
   /* ---------- wire up ---------- */
   function init() {
-    animStars(); renderMemory(); renderModules();
+    loadStats(); renderMemory(); renderModules();
     // initial empty swarm scaffold (idle preview)
     renderSwarmCards(G.reason($("#prompt").value).agents);
     $("#run").addEventListener("click", run);
