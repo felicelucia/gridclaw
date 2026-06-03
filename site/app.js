@@ -36,7 +36,7 @@
       // contributors: count via the contributors endpoint (fallback to 1)
       try {
         const cr = await fetch("https://api.github.com/repos/" + REPO + "/contributors?per_page=100&anon=1", { headers: { Accept: "application/vnd.github+json" } });
-        if (cr.ok) { const cl = await cr.json(); countUp("herocontrib", Array.isArray(cl) ? cl.length : 1); }
+        if (cr.ok) { const cl = await cr.json(); const n = Array.isArray(cl) ? cl.length : 1; countUp("herocontrib", n); const lbl = document.getElementById("contriblabel"); if (lbl) lbl.textContent = n === 1 ? "contributor" : "contributors"; }
       } catch (e) { /* keep default */ }
     } catch (e) {
       // Offline / rate-limited: leave honest zeros in place.
