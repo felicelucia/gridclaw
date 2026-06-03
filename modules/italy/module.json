@@ -1,0 +1,94 @@
+{
+  "$schema": "../../format/project.schema.json",
+  "code": "IT",
+  "name": "Italy",
+  "flag": "🇮🇹",
+  "status": "active",
+  "maintainer": "Reference module — renewable-energy developer, Campania (BESS pipeline)",
+  "lastReviewed": "2025-10",
+  "authorities": {
+    "regulator": { "name": "ARERA", "role": "Energy regulator: market rules, tariffs, grid-code & connection rules (TICA)", "url": "https://www.arera.it" },
+    "tso": { "name": "Terna", "role": "Transmission System Operator: HV grid, STMG, MACSE, Capacity Market", "url": "https://www.terna.it" },
+    "dso": { "name": "e-distribuzione", "role": "Largest Distribution System Operator: MV/LV connections", "url": "https://www.e-distribuzione.it" },
+    "ministry": { "name": "MASE", "role": "Ministry of Environment & Energy Security: single-authorization for standalone BESS (DG-FTA Div. IV)", "url": "https://www.mase.gov.it" },
+    "incentiveAgency": { "name": "GSE", "role": "Manages incentive schemes (FER, auctions, guarantees of origin)", "url": "https://www.gse.it" },
+    "marketOperator": { "name": "GME", "role": "Power-exchange operator (MGP/MI day-ahead & intraday)", "url": "https://www.mercatoelettrico.org" }
+  },
+  "schemes": {
+    "MACSE": {
+      "full": "Meccanismo di Approvvigionamento di Capacità di Stoccaggio Elettrico",
+      "desc": "15-year tolling contract with Terna for new electricity storage. First auction (Sept 2025) procured 10 GWh with delivery from 2028; owners may keep a share of capacity for merchant upside.",
+      "source": "Terna; Decreto MASE 9 luglio 2024 n.190; ARERA Del. 247/2023/R/eel",
+      "date": "2025-10"
+    },
+    "capacityMarket": {
+      "full": "Mercato della Capacità",
+      "desc": "Annual reliability auction run by Terna ~T-2. Feb 2025 new-capacity clearing ≈ €47,000/MW/year; storage derated by duration.",
+      "source": "Terna Capacity Market results",
+      "date": "2025-02"
+    },
+    "merchant": {
+      "full": "Merchant arbitrage + ancillary services (MSD)",
+      "desc": "Energy arbitrage on MGP/MI plus ancillary-services revenue on the MSD/Dispatching market. Highest upside, highest risk.",
+      "source": "GME / Terna MSD",
+      "date": "2025"
+    },
+    "FER": {
+      "full": "FER-X / FER auctions (renewable generation)",
+      "desc": "Incentive framework for renewable generation under D.Lgs 199/2021 (RED II transposition), administered by GSE.",
+      "source": "D.Lgs 199/2021; GSE",
+      "date": "2024"
+    }
+  },
+  "permitting": {
+    "standaloneBESS": {
+      "iter": "Autorizzazione Unica (single authorization)",
+      "authority": "MASE — DG-FTA, Division IV (Sicily: Service 3, Regional Energy Dept.)",
+      "portal": "MASE single-authorization online portal, live from 2 Dec 2024",
+      "eiaNote": "Standalone electrochemical BESS generally NOT subject to VIA/EIA under D.Lgs 152/2006 when sited in qualifying areas (e.g. ≥300 MWth fossil sites, or non-industrial areas per art.1(2)(b) D.L. 7/2002).",
+      "typicalMonths": 12,
+      "source": "MASE Operational Guidelines (16 Apr 2024); ess-news 12 Nov 2024",
+      "date": "2024-11"
+    },
+    "regionalPAUR": {
+      "iter": "PAUR — Provvedimento Autorizzatorio Unico Regionale",
+      "authority": "Regione Campania (projects requiring regional VIA)",
+      "desc": "Regional single authorization combining VIA + Autorizzazione Unica when environmental assessment is triggered (e.g. co-located generation, or by size/sensitivity).",
+      "typicalMonths": 18,
+      "source": "D.Lgs 152/2006 art.27-bis; Regione Campania",
+      "date": "2024"
+    }
+  },
+  "grid": {
+    "saturation": "The HV grid in Southern Italy is heavily saturated; a binding answer requires Terna's STMG, not the preliminary estimate.",
+    "stmg": "STMG (Soluzione Tecnica Minima Generale) = Terna's binding minimum general technical solution defining connection works, voltage, point of connection and costs.",
+    "voltageDefault": "150 kV (HV) typical for ≥10 MW storage; MV fallback via e-distribuzione",
+    "source": "Terna grid code; ARERA TICA art.20 (STMG)",
+    "date": "2025"
+  },
+  "finance": {
+    "currency": "EUR",
+    "defaults": {
+      "capexPerKwh": 250,
+      "opexPctOfCapex": 0.02,
+      "lifeYears": 15,
+      "discountRate": 0.08,
+      "tollRevenuePerMwYr": 130000,
+      "merchantRevenuePerMwYr": 60000,
+      "revenueEscal": -0.005,
+      "degradation": 0.018,
+      "debtRatio": 0.65,
+      "debtRate": 0.055,
+      "debtTenor": 12,
+      "taxRate": 0.24
+    },
+    "note": "Defaults reflect 2025 Italian LFP turnkey costs and a MACSE-tolled + merchant revenue stack for a 4h system. Override per project."
+  },
+  "refNorms": [
+    { "id": "DM 190/2024", "what": "MACSE storage procurement mechanism", "source": "Decreto MASE 9 luglio 2024 n.190", "date": "2024-07", "status": "in force" },
+    { "id": "D.Lgs 199/2021", "what": "RED II transposition — FER incentives framework", "source": "Gazzetta Ufficiale", "date": "2021-11", "status": "in force" },
+    { "id": "TICA / Del.281/2022", "what": "Connection rules & STMG procedure", "source": "ARERA", "date": "2022", "status": "in force, periodically updated" },
+    { "id": "D.L. 7/2002 art.1(2)(b)", "what": "Single-authorization basis for energy infrastructure", "source": "Gazzetta Ufficiale", "date": "2002", "status": "in force" },
+    { "id": "D.Lgs 152/2006", "what": "Environmental code — VIA/EIA & PAUR (art.27-bis)", "source": "Gazzetta Ufficiale", "date": "2006", "status": "in force" }
+  ]
+}

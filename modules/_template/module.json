@@ -1,0 +1,70 @@
+{
+  "$schema": "../../format/project.schema.json",
+  "code": "XX",
+  "name": "<Country name>",
+  "flag": "🏳️",
+  "status": "draft",
+  "maintainer": "<your name / org> — open a PR",
+  "lastReviewed": "YYYY-MM",
+
+  "authorities": {
+    "regulator": { "name": "", "role": "Energy regulator: market rules, tariffs, grid code", "url": "" },
+    "tso": { "name": "", "role": "Transmission System Operator: HV grid, connection, capacity", "url": "" },
+    "dso": { "name": "", "role": "Distribution System Operator: MV/LV connections", "url": "" },
+    "ministry": { "name": "", "role": "Ministry responsible for energy permitting", "url": "" },
+    "incentiveAgency": { "name": "", "role": "Manages incentive schemes / auctions", "url": "" },
+    "marketOperator": { "name": "", "role": "Power-exchange / market operator", "url": "" }
+  },
+
+  "schemes": {
+    "<schemeKey>": {
+      "full": "Full scheme name",
+      "desc": "What it pays, tenor, eligibility, latest auction result.",
+      "source": "Primary source (TSO / regulator / decree)",
+      "date": "YYYY-MM"
+    }
+  },
+
+  "permitting": {
+    "<projectType>": {
+      "iter": "Name of the authorization procedure",
+      "authority": "Competent authority (national/regional)",
+      "portal": "Application portal, if any",
+      "eiaNote": "When is an environmental assessment (EIA/VIA) triggered?",
+      "typicalMonths": 12,
+      "source": "Statute / guideline reference",
+      "date": "YYYY-MM"
+    }
+  },
+
+  "grid": {
+    "saturation": "Is the grid saturated? What is the binding connection answer?",
+    "stmg": "Name of the binding technical connection solution (e.g. STMG, offer, connection agreement).",
+    "voltageDefault": "Typical connection voltage for utility-scale projects",
+    "source": "Grid code / regulator reference",
+    "date": "YYYY-MM"
+  },
+
+  "finance": {
+    "currency": "EUR",
+    "defaults": {
+      "capexPerKwh": 250,
+      "opexPctOfCapex": 0.02,
+      "lifeYears": 15,
+      "discountRate": 0.08,
+      "tollRevenuePerMwYr": 0,
+      "merchantRevenuePerMwYr": 0,
+      "revenueEscal": 0,
+      "degradation": 0.018,
+      "debtRatio": 0.6,
+      "debtRate": 0.06,
+      "debtTenor": 12,
+      "taxRate": 0.25
+    },
+    "note": "Localize capex and the revenue stack to your market. Override per project."
+  },
+
+  "refNorms": [
+    { "id": "<law id>", "what": "What it governs", "source": "Official gazette / agency", "date": "YYYY-MM", "status": "in force" }
+  ]
+}

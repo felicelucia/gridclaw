@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridclaw.dev/format/project.schema.json",
+  "title": "GridClaw Project Format",
+  "description": "The common, model-agnostic Format that GridClaw emits for any energy project in any country. Seven blocks; every field carries a source + date for transparency, and each block carries a critic badge.",
+  "type": "object",
+  "required": [
+    "block1_lifecycle", "block2_identity", "block3_constraints",
+    "block4_permitting", "block5_grid", "block6_finance", "block7_match"
+  ],
+  "$defs": {
+    "sourced": {
+      "type": "object",
+      "description": "Any value that must be attributable.",
+      "required": ["source", "date"],
+      "properties": {
+        "source": { "type": "string", "description": "Primary source (authority, statute, operator, model)." },
+        "date": { "type": "string", "description": "ISO date or YYYY-MM of the source / last verification." }
+      }
+    },
+    "badge": {
+      "type": "string",
+      "description": "Critic verdict for the block.",
+      "pattern": "(Critic verified ✓|⚠️ needs human).*"
+    }
+  },
+  "properties": {
+    "block1_lifecycle": {
+      "type": "object",
+      "description": "① Lifecycle state determines the interlocutor.",
+      "required": ["state", "determinesInterlocutor", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "state": { "type": "string", "enum": [
+          "Greenfield (early development)", "Brownfield", "RTB (Ready-to-Build)",
+          "NTP (Notice to Proceed)", "COD (Operational)", "Revamping / Repowering"
+        ]},
+        "determinesInterlocutor": { "type": "string" },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    },
+    "block2_identity": {
+      "type": "object",
+      "description": "② Technology and physical identity.",
+      "required": ["tech", "mw", "mwh", "location", "coords", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "tech": { "type": "string" },
+        "mw": { "type": "number" },
+        "mwh": { "type": "number" },
+        "duration": { "type": "string" },
+        "location": { "type": "string" },
+        "coords": { "type": "string", "description": "lat, lon" },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    },
+    "block3_constraints": {
+      "type": "object",
+      "description": "③ Area & constraints screened from coordinates.",
+      "required": ["items", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "items": {
+          "type": "object",
+          "description": "Keyed findings (landscape, hydrogeological, substation, ...).",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["label", "value", "flag", "source", "date"],
+            "allOf": [{ "$ref": "#/$defs/sourced" }],
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "string" },
+              "flag": { "$ref": "#/$defs/badge" }
+            }
+          }
+        },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    },
+    "block4_permitting": {
+      "type": "object",
+      "description": "④ Permitting iter, authority, status, timeline, living norms (RAG, temporal-checked).",
+      "required": ["iter", "authority", "status", "estMonths", "livingNorms", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "iter": { "type": "string" },
+        "authority": { "type": "string" },
+        "altIter": { "type": "string" },
+        "altAuthority": { "type": "string" },
+        "status": { "type": "string" },
+        "estMonths": { "type": "string" },
+        "livingNorms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "what", "source", "date", "status"],
+            "allOf": [{ "$ref": "#/$defs/sourced" }],
+            "properties": {
+              "id": { "type": "string" },
+              "what": { "type": "string" },
+              "status": { "type": "string", "description": "e.g. 'in force', 'repealed', 'amended'." }
+            }
+          }
+        },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    },
+    "block5_grid": {
+      "type": "object",
+      "description": "⑤ Grid operator, connection status (binding technical solution), voltage, queue.",
+      "required": ["operator", "connectionStatus", "voltage", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "operator": { "type": "string" },
+        "connectionStatus": { "type": "string" },
+        "note": { "type": "string" },
+        "voltage": { "type": "string" },
+        "queue": { "type": "string" },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    },
+    "block6_finance": {
+      "type": "object",
+      "description": "⑥ Revenue scheme + REAL computed IRR/NPV/payback + scenario comparison.",
+      "required": ["scheme", "assumptions", "capex", "annualRevenueY1", "projectIRR", "equityIRR", "projectNPV", "scenarios", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "scheme": { "type": "string" },
+        "assumptions": {
+          "type": "object",
+          "description": "All inputs shown to the user; IRR is computed from these by real code.",
+          "properties": {
+            "capexPerKwh": { "type": "number" },
+            "opexPctOfCapex": { "type": "number" },
+            "lifeYears": { "type": "integer" },
+            "discountRate": { "type": "number" },
+            "debtRatio": { "type": "number" },
+            "debtRate": { "type": "number" },
+            "debtTenor": { "type": "integer" },
+            "taxRate": { "type": "number" }
+          }
+        },
+        "capex": { "type": "number" },
+        "equity": { "type": "number" },
+        "debt": { "type": "number" },
+        "annualRevenueY1": { "type": "number" },
+        "ebitdaY1": { "type": "number" },
+        "projectIRR": { "type": ["number", "null"], "description": "Computed unlevered IRR (fraction)." },
+        "equityIRR": { "type": ["number", "null"], "description": "Computed levered IRR (fraction)." },
+        "projectNPV": { "type": "number" },
+        "paybackYears": { "type": ["integer", "null"] },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "annualRevenue", "projectIRR", "equityIRR"],
+            "properties": {
+              "label": { "type": "string" },
+              "annualRevenue": { "type": "number" },
+              "projectIRR": { "type": ["number", "null"] },
+              "equityIRR": { "type": ["number", "null"] }
+            }
+          }
+        },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    },
+    "block7_match": {
+      "type": "object",
+      "description": "⑦ Interlocutor / match — who to contact, derived from the lifecycle state.",
+      "required": ["interlocutor", "rationale", "badge", "source", "date"],
+      "allOf": [{ "$ref": "#/$defs/sourced" }],
+      "properties": {
+        "interlocutor": { "type": "string" },
+        "rationale": { "type": "string" },
+        "badge": { "$ref": "#/$defs/badge" }
+      }
+    }
+  }
+}

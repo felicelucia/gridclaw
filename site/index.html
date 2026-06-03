@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GridClaw — The open-source engine that understands, learns and acts on energy, in any country</title>
+<meta name="description" content="GridClaw is a generalist, model-agnostic AI engine for the energy sector. It finds the right sources, learns the rules, and acts: permitting, grid, market & IRR. Fork your country.">
+<meta property="og:title" content="GridClaw — open-source energy engine">
+<meta property="og:description" content="The bottleneck of the AI era is not the chip — it's permitting and grid connection. We're opening it up.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 L27 9 V23 L16 29 L5 23 V9 Z' fill='none' stroke='%2337e0a6' stroke-width='2'/%3E%3Cpath d='M17 8 L11 17 H16 L15 24 L21 14 H16 Z' fill='%2337e0a6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-fx"><div class="glow g1"></div><div class="glow g2"></div></div>
+
+<!-- NAV -->
+<header class="nav"><div class="wrap nav-in">
+  <a class="brand" href="#top">
+    <svg viewBox="0 0 32 32" aria-label="GridClaw logo"><path d="M16 3 L27 9 V23 L16 29 L5 23 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M17 8 L11 17 H16 L15 24 L21 14 H16 Z" fill="var(--acc)"/></svg>
+    <span>GridClaw</span>
+  </a>
+  <nav class="nav-links">
+    <a href="#engine">Engine</a>
+    <a href="#memory">Memory</a>
+    <a href="#fork">Fork your country</a>
+    <a href="#stack">Open stack</a>
+    <a href="#pricing">Pricing</a>
+  </nav>
+  <a class="nav-cta" href="https://github.com" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="16"><path d="M12 .5C5.4.5 0 5.9 0 12.5c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 24 12.5C24 5.9 18.6.5 12 .5z"/></svg>
+    Star ·<b id="navstars">1,000</b>
+  </a>
+</div></header>
+
+<a id="top"></a>
+<!-- HERO -->
+<section class="hero"><div class="wrap">
+  <div class="tag"><span class="dot"></span> Model-agnostic · Claude / GPT / DeepSeek swappable · AGPL-3.0</div>
+  <h1>GridClaw</h1>
+  <p class="sub">The open-source engine that <b class="acc">understands</b>, <b class="acc">learns</b> and <b class="acc">acts</b> on energy — in any country.</p>
+  <div class="thesis">
+    <b>The bottleneck of the AI era is not the chip — it's permitting and grid connection.</b>
+    Data centers, electrification and storage are blocked at the interconnection queue and the authorization desk.
+    GridClaw turns the world's energy rulebooks into something an agent can read, reason over, and act on. We're opening it up.
+  </div>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="https://github.com" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.4.5 0 5.9 0 12.5c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 24 12.5C24 5.9 18.6.5 12 .5z"/></svg>
+      Star on GitHub
+    </a>
+    <a class="btn btn-ghost" href="#fork">⑂ Fork your country</a>
+    <span class="star-count">★ <b id="herostars">1,000</b> stars · <b>72</b> contributors · <b>14</b> countries forked</span>
+  </div>
+</div></section>
+
+<!-- CAPABILITIES -->
+<section><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">The generalist loop</div>
+    <h2 class="h2">One engine. Three capabilities.<br>Every country.</h2>
+    <p class="lead">GridClaw is a generalist engine that, in every country, understands <i>where</i> to get the information, <i>learns</i> it, and then <i>acts</i> on it.</p>
+  </div>
+  <div class="triad">
+    <div class="cap reveal"><div class="num">01 · UNDERSTAND</div><h3>Find the right sources</h3><p>Locate the regulator, the grid operator, the tender platforms and the laws that govern a project — without a human telling it where to look.</p></div>
+    <div class="cap reveal"><div class="num">02 · LEARN</div><h3>Read &amp; structure</h3><p>Parse heterogeneous rulebooks into one common Format, kept alive via RAG so norms and rulings never go stale.</p></div>
+    <div class="cap reveal"><div class="num">03 · ACT</div><h3>Compute, simulate, contact</h3><p>Run the real IRR, simulate scenarios, compare schemes, and route the dossier to the right counterparty.</p></div>
+  </div>
+</div></section>
+
+<!-- LIVE ENGINE DEMO -->
+<section id="engine"><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Live engine · runs offline, no API key</div>
+    <h2 class="h2">Describe a project. Watch the swarm work.</h2>
+    <p class="lead">A multi-agent swarm finds the sources, learns the rules, computes the economics, and a critic verifies every block. The reasoning is mocked for the demo; the IRR is computed by real code.</p>
+  </div>
+  <div class="engine reveal">
+    <div class="prompt-row">
+      <label class="prompt-box">
+        <span class="pfx">▸</span>
+        <input id="prompt" value="BESS 100MW / 400MWh in Vallo della Lucania, Campania — is it feasible and what's the IRR?" />
+      </label>
+      <button class="btn btn-primary run-btn" id="run">⚡ Run engine</button>
+    </div>
+    <div class="examples">
+      <span class="chip" data-ex="BESS 200MW / 800MWh brownfield ex-coal site in Brindisi, RTB — who do I sell to?">RTB brownfield · Brindisi</span>
+      <span class="chip" data-ex="Solar PV 48MW in Foggia, Puglia — feasibility and revenue scheme">Solar PV · Foggia</span>
+      <span class="chip" data-ex="BESS 30MW / 120MWh greenfield in Sardinia — merchant IRR">BESS island · Sardinia</span>
+      <span class="chip" data-ex="Wind repowering 22MW in Benevento — permitting path">Wind repower · Benevento</span>
+    </div>
+
+    <!-- swarm -->
+    <div class="swarm" id="swarm"></div>
+
+    <!-- output -->
+    <div id="output" style="display:none">
+      <div class="verdict" id="verdict"></div>
+      <div class="fmt" id="fmt"></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- MEMORY -->
+<section id="memory"><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Compounding moat</div>
+    <h2 class="h2">The engine remembers.</h2>
+    <p class="lead">Every analysis is stored in a structured memory. Past projects inform new ones — comparables, counterparties, connection corridors. The dataset is the moat.</p>
+  </div>
+  <div class="mem-grid" id="memgrid"></div>
+  <p class="mem-note">Every analysis makes GridClaw smarter. <span class="acc">+1 memory written</span> each time the engine runs.</p>
+</div></section>
+
+<!-- FORK YOUR COUNTRY -->
+<section id="fork"><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Built to be forked</div>
+    <h2 class="h2">A generalist kernel.<br>One module per country.</h2>
+    <p class="lead">The kernel handles understanding, learning and acting. Each contributor adds their country's regulator, grid operator, permitting iter and market schemes. Italy is the reference module — fork it for yours.</p>
+  </div>
+  <div class="kernel reveal">
+    <div class="kernel-box"><div class="kt">⬡ GridClaw Kernel</div><div class="kd">orchestration · source-finder · RAG · IRR engine · critic</div></div>
+    <div class="connector"></div>
+    <div class="modules" id="modules"></div>
+  </div>
+  <div class="code-block reveal">
+<span class="cm"># Add your country in three files</span>
+<span class="dir">modules/</span>
+├─ <span class="dir">italy/</span>          <span class="cm"># ✅ reference module — Terna, MACSE, GSE, ARERA, MASE</span>
+│  ├─ <span class="file">module.json</span>   <span class="cm"># authorities, schemes, permitting iters, living norms</span>
+│  ├─ <span class="file">constraints.js</span><span class="cm"># coordinate → landscape/hydro/substation screen</span>
+│  └─ <span class="file">README.md</span>
+├─ <span class="dir">_template/</span>     <span class="cm"># ⑂ copy this to bootstrap a new country</span>
+│  └─ <span class="file">module.json</span>
+└─ <span class="dir">spain/  germany/  greece/ ...</span>  <span class="cm"># your PR goes here</span>
+
+<span class="cm"># 1. cp -r modules/_template modules/&lt;country&gt;</span>
+<span class="cm"># 2. fill module.json: regulator, TSO/DSO, ministry, schemes, permitting, refNorms</span>
+<span class="cm"># 3. open a PR — the kernel auto-registers the module by its ISO code</span>
+  </div>
+</div></section>
+
+<!-- OPEN ENGINE STACK -->
+<section id="stack"><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Honest by design</div>
+    <h2 class="h2">We orchestrate the world's best open engines<br>instead of reinventing them.</h2>
+    <p class="lead">GridClaw is glue + domain knowledge. It composes best-of-breed open-source engines into one energy-native loop.</p>
+  </div>
+  <div class="stack-grid">
+    <div class="stk reveal"><div class="sl">Orchestration</div><h4>LangGraph-style multi-agent kernel</h4><p>Stateful graph of agents (source · permitting · grid · market · critic) with shared memory and handoffs.</p><div class="links"><a href="https://github.com/geekan/MetaGPT" target="_blank" rel="noopener">MetaGPT</a><a href="https://github.com/FoundationAgents/OpenManus" target="_blank" rel="noopener">OpenManus</a><a href="https://github.com/camel-ai/camel" target="_blank" rel="noopener">CAMEL</a></div></div>
+    <div class="stk reveal"><div class="sl">Deep research</div><h4>Source Finder</h4><p>Autonomous web research that locates regulators, grid maps, tenders and statutes — then cites them.</p><div class="links"><a href="https://github.com/InternLM/MindSearch" target="_blank" rel="noopener">MindSearch</a><a href="https://github.com/Alibaba-NLP/DeepResearch" target="_blank" rel="noopener">Alibaba DeepResearch</a><a href="https://github.com/langchain-ai/open_deep_research" target="_blank" rel="noopener">open_deep_research</a></div></div>
+    <div class="stk reveal"><div class="sl">Swarm simulation</div><h4>Scenario engine</h4><p>Multi-scenario simulation of revenue stacks and grid outcomes to stress-test feasibility.</p><div class="links"><a href="https://github.com/666ghj/MiroFish" target="_blank" rel="noopener">MiroFish</a></div></div>
+    <div class="stk reveal"><div class="sl">Living norms</div><h4>Legal RAG</h4><p>Laws + rulings kept alive in a retrieval index with temporal validity checks by the critic agent.</p><div class="links"><a href="https://github.com/lawglance/lawglance" target="_blank" rel="noopener">LawGlance</a></div></div>
+  </div>
+</div></section>
+
+<!-- PRICING -->
+<section id="pricing"><div class="wrap">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Monetization</div>
+    <h2 class="h2">Free engine. You pay at the handoff.</h2>
+    <p class="lead">The engine is open and free forever. You pay only when an analysis hits a <span class="warn">⚠️ needs human</span> gate — the moment value becomes real.</p>
+  </div>
+  <div class="price-grid">
+    <div class="tier reveal"><div class="tn">Open Engine</div><div class="tp">€0</div><ul><li>Full AGPL-3.0 engine</li><li>All country modules</li><li>Unlimited analyses, self-hosted</li><li>Bring your own LLM key</li></ul></div>
+    <div class="tier feature reveal"><span class="pill">FREEMIUM</span><div class="tn">Human Handoff</div><div class="tp">pay-per-gate <small>/ ⚠️ item</small></div><ul><li>Everything in Open Engine</li><li>STMG &amp; permitting expert review</li><li>Verified constraint screening</li><li>Counterparty introduction</li><li>You pay only at the "needs human" step</li></ul></div>
+    <div class="tier reveal"><div class="tn">Country Customization</div><div class="tp">consulting</div><ul><li>New country module, built &amp; maintained</li><li>Private data integrations</li><li>Bespoke market models</li><li>Priority support &amp; SLA</li></ul></div>
+  </div>
+</div></section>
+
+<!-- FOOTER -->
+<footer><div class="wrap foot-in">
+  <div>
+    <a class="brand" href="#top"><svg viewBox="0 0 32 32" width="24" aria-label="GridClaw"><path d="M16 3 L27 9 V23 L16 29 L5 23 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M17 8 L11 17 H16 L15 24 L21 14 H16 Z" fill="var(--acc)"/></svg><span>GridClaw</span></a>
+    <p>The open standard for energy by 2028. Generalist kernel, one module per country. Model-agnostic. AGPL-3.0. Built by an energy developer, for everyone building the grid.</p>
+  </div>
+  <div class="foot-links">
+    <div class="foot-col"><h5>Engine</h5><a href="#engine">Live demo</a><a href="#memory">Memory</a><a href="#stack">Open stack</a></div>
+    <div class="foot-col"><h5>Contribute</h5><a href="#fork">Fork your country</a><a href="https://github.com" target="_blank" rel="noopener">GitHub</a><a href="https://github.com" target="_blank" rel="noopener">Roadmap</a></div>
+    <div class="foot-col"><h5>Modules</h5><a href="#fork">🇮🇹 Italy (live)</a><a href="#fork">🇪🇸 Spain</a><a href="#fork">🇩🇪 Germany</a></div>
+  </div>
+</div></footer>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
